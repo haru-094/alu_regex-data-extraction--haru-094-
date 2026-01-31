@@ -38,7 +38,6 @@ The program identifies specific data entities (Emails, Phone Numbers, Credit Car
 
     ```bash
     python main.py
-    python3 main.py [Linux/MacOS]
     ```
 
 4.  **View Results:**
@@ -59,3 +58,33 @@ The core of this project relies on four robust Regex patterns:
 `r"(?:\+\d{1,3}[\s.-]?)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}"`
 
 - **Logic:** Handles complex real-world formats including:
+  - Optional Country Codes: `+1`, `+254`
+  - Parentheses: `(555)`
+  - Separators: Dots `.` or Dashes `-`
+
+### 3. Credit Card Numbers
+
+`r"\b[0-9]{4}[-\s]?[0-9]{4}[-\s]?[0-9]{4}[-\s]?[0-9]{4}\b"`
+
+- **Logic:** Identifies 16-digit numbers grouped in fours. It accepts both space-separated (`1234 5678...`) and dash-separated (`1234-5678...`) formats.
+
+### 4. URLs
+
+`r"https?://(?:www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?:/[^\s]*)"`
+
+- **Logic:** Captures `http` or `https` links. It is designed to be flexible enough to catch subdomains (`api.google.com`) and file paths (`/images/logo.png`).
+
+## Security Measures
+
+### PII Protection (Masking)
+
+To comply with data privacy standards, raw sensitive data is never written to the logs.
+
+- **Credit Cards:** Converted to `XXXX-XXXX-XXXX-1234`.
+- **Emails:** Converted to `u***@domain.com`.
+
+### Threat Detection
+
+The system scans for common injection patterns using:
+`r"<script.*?>.*?</script>|javascript:"`
+If found, a **SECURITY ALERT** is logged in the output file, warning administrators of potential XSS (Cross-Site Scripting) attempts in the input data.
