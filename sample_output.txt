@@ -1,0 +1,8 @@
+Email Found
+['bil******@example.com']
+Phone Found:
+['(555) 019-2834', '555.012.3456']
+Credit Found:
+['XXXX-XXXX-XXXX-9012', 'XXXX-XXXX-XXXX-4444']
+URL Found:
+['https://payments.example.com/retry.', 'http://malicious-site.ru/hack?payload=123']

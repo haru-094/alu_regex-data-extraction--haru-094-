@@ -10,11 +10,13 @@ regex_security_pattern = r"<script.*?>.*?</script>|javascript:"
 
 
 # Using try/except to open the file sample
+sample = ""
 try:
     with open("sample.txt", "r") as regex_sample:
         sample = regex_sample.read()
 except FileNotFoundError:
     print("There is error: sample.txt file not found")
+    exit(1)
 
 # Security check of harm input
 if sample:
@@ -54,29 +56,29 @@ url_checker = re.findall(regex_url_pattern, sample)
 
 email_checker = re.findall(regex_email_pattern, sample)
 new_email = [encrypt_email(e) for e in email_checker]
-print(new_email)
+# print(new_email)
 credit_checker = re.findall(regex_credit_pattern, sample)
 new_credit = [encrypt_card(c) for c in credit_checker]
-print(new_credit)
+# print(new_credit)
 
 # Add the output to file
-# with open("sample_output.txt", "w") as regex_output:
-#     if not email_checker:
-#         regex_output.write("email not found in the sample")
-#     else:
-#         regex_output.write(str(email_checker))
+with open("sample_output.txt", "w") as regex_output:
+    if not new_email:
+        regex_output.write("email not found in the sample")
+    else:
+        regex_output.write(str(f"Email Found\n{new_email}\n"))
 
-#     if not phone_checker:
-#         regex_output.write("phone not found in the sample")
-#     else:
-#         regex_output.write(str(phone_checker))
+    if not phone_checker:
+        regex_output.write("phone not found in the sample")
+    else:
+        regex_output.write(str(f"Phone Found:\n{phone_checker}\n"))
 
-#     if not credit_checker:
-#         regex_output.write("credit not found in the sample")
-#     else:
-#         regex_output.write(str(credit_checker))
+    if not new_credit:
+        regex_output.write("credit not found in the sample")
+    else:
+        regex_output.write(str(f"Credit Found:\n{new_credit}\n"))
 
-#     if not url_checker:
-#         regex_output.write("url not found in the sample")
-#     else:
-#         regex_output.write(str(url_checker))
+    if not url_checker:
+        regex_output.write("url not found in the sample")
+    else:
+        regex_output.write(str(f"URL Found:\n{url_checker}\n"))
